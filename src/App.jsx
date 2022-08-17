@@ -23,41 +23,31 @@ export default function App() {
             id: nanoid(),
             body: "# Type your markdown note's title here"
         }
-        setNotes(prevNotes => [newNote, ...prevNotes])
+        setNotes(prevNotes => {
+            return [newNote, ...prevNotes]
+        })
         setCurrentNoteId(newNote.id)
     }
     
     function updateNote(text) {
-        // Put the most recently-modified note at the top
         setNotes(oldNotes => {
             const newArray = []
-            for(let i = 0; i < oldNotes.length; i++) {
-                const oldNote = oldNotes[i]
+            for(let oldNote of oldNotes) {
                 if(oldNote.id === currentNoteId) {
-                    newArray.unshift({ ...oldNote, body: text })
+                    newArray.unshift({...oldNote, body: text})
                 } else {
                     newArray.push(oldNote)
                 }
             }
+
             return newArray
         })
     }
     
-    /**
-     * Challenge: complete and implement the deleteNote function
-     * 
-     * Hints: 
-     * 1. What array method can be used to return a new
-     *    array that has filtered out an item based 
-     *    on a condition?
-     * 2. Notice the parameters being based to the function
-     *    and think about how both of those parameters
-     *    can be passed in during the onClick event handler
-     */
-    
     function deleteNote(event, noteId) {
         event.stopPropagation()
-        // Your code here
+        console.log("deleted", notes[0].id, noteId)
+        setNotes(oldNotes => oldNotes.filter(oldNote =>  oldNote.id !== noteId ) )
     }
     
     function findCurrentNote() {
@@ -81,6 +71,7 @@ export default function App() {
                     currentNote={findCurrentNote()}
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
+                    deleteNote = {deleteNote}
                 />
                 {
                     currentNoteId && 
