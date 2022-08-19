@@ -1,10 +1,8 @@
 import React from "react"
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
-import { data } from "./data"
 import Split from "react-split"
 import {nanoid} from "nanoid"
-import "./App.css"
 
 export default function App() {
     const [notes, setNotes] = React.useState(
@@ -23,31 +21,28 @@ export default function App() {
             id: nanoid(),
             body: "# Type your markdown note's title here"
         }
-        setNotes(prevNotes => {
-            return [newNote, ...prevNotes]
-        })
+        setNotes(prevNotes => [newNote, ...prevNotes])
         setCurrentNoteId(newNote.id)
     }
     
     function updateNote(text) {
         setNotes(oldNotes => {
             const newArray = []
-            for(let oldNote of oldNotes) {
+            for(let i = 0; i < oldNotes.length; i++) {
+                const oldNote = oldNotes[i]
                 if(oldNote.id === currentNoteId) {
-                    newArray.unshift({...oldNote, body: text})
+                    newArray.unshift({ ...oldNote, body: text })
                 } else {
                     newArray.push(oldNote)
                 }
             }
-
             return newArray
         })
     }
     
     function deleteNote(event, noteId) {
         event.stopPropagation()
-        console.log("deleted", notes[0].id, noteId)
-        setNotes(oldNotes => oldNotes.filter(oldNote =>  oldNote.id !== noteId ) )
+        setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId))
     }
     
     function findCurrentNote() {
@@ -71,7 +66,7 @@ export default function App() {
                     currentNote={findCurrentNote()}
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
-                    deleteNote = {deleteNote}
+                    deleteNote={deleteNote}
                 />
                 {
                     currentNoteId && 
