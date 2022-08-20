@@ -1,5 +1,6 @@
 import React from "react"
 import ReactMde from "react-mde"
+import { Mde} from 'fc-mde';
 import * as Showdown from "showdown";
 
 export default function Editor({ currentNote, updateNote }) {
@@ -14,9 +15,9 @@ export default function Editor({ currentNote, updateNote }) {
 
     return (
         <section className="pane editor">
-            <ReactMde
-                value={currentNote.body}
-                onChange={updateNote}
+            <Mde
+                text={currentNote.body}
+                setText={updateNote}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
                 generateMarkdownPreview={(markdown) =>
